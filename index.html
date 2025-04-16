@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thunderball Number Analyzer & Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .file-input {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .instructions {
+            background-color: #eaf7fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .analysis-section {
+            background-color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .highlight {
+            background-color: #fffde7;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 5px;
+        }
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .hot-number {
+            color: #e53935;
+            font-weight: bold;
+        }
+        .cold-number {
+            color: #1e88e5;
+            font-weight: bold;
+        }
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            margin: 15px 0;
+        }
+        .bonus-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin: 15px 0;
+        }
+        .number-cell {
+            padding: 8px;
+            text-align: center;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+        }
+        .hot-cold-section {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .hot-cold-box {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .hot-numbers {
+            background-color: #ffebee;
+            border: 1px solid #ef9a9a;
+        }
+        .cold-numbers {
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+        }
+        .generator-section {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .generator-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .control-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .range-controls {
+            display: flex;
+            gap: 10px;
+        }
+        .range-control {
+            flex: 1;
+        }
+        .generated-numbers {
+            margin-top: 20px;
+        }
+        .number-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .main-numbers {
+            display: flex;
+            gap: 5px;
+            margin-right: 15px;
+        }
+        .number-ball {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .low-number {
+            background-color: #4CAF50;
+        }
+        .mid-number {
+            background-color: #2196F3;
+        }
+        .high-number {
+            background-color: #F44336;
+        }
+        .thunderball {
+            background-color: #9C27B0;
+        }
+        .stats {
+            margin-left: auto;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thunderball Number Analyzer & Generator</h1>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <p>Upload a CSV file containing Thunderball draw data. The file should have columns for the main numbers (5 numbers) and the Thunderball (1 number).</p>
+            <p>Example format: 3,19,20,23,36,14 (first 5 are main numbers, last is Thunderball)</p>
+        </div>
+        
+        <div class="generator-section">
+            <h2>Number Generator</h2>
+            <div class="generator-controls">
+                <div class="control-group">
+                    <label for="numLines">Number of Lines:</label>
+                    <input type="number" id="numLines" min="1" max="20" value="5">
+                </div>
+                
+                <div class="control-group">
+                    <label>Odd/Even Numbers:</label>
+                    <div class="range-controls">
+                        <div class="range-control">
+                            <select id="oddCount">
+                                <option value="any">Any odd</option>
+                                <option value="0">0 odd</option>
+                                <option value="1">1 odd</option>
+                                <option value="2">2 odd</option>
+                                <option value="3">3 odd</option>
+                                <option value="4">4 odd</option>
+                                <option value="5">5 odd</option>
+                            </select>
+                        </div>
+                        <div class="range-control">
+                            <select id="evenCount">
+                                <option value="any">Any even</option>
+                                <option value="0">0 even</option>
+                                <option value="1">1 even</option>
+                                <option value="2">2 even</option>
+                                <option value="3">3 even</option>
+                                <option value="4">4 even</option>
+                                <option value="5">5 even</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label>Number Ranges:</label>
+                    <div class="range-controls">
+                        <div class="range-control">
+                            <select id="lowCount">
+                                <option value="any">Any low</option>
+                                <option value="0">0 low</option>
+                                <option value="1">1 low</option>
+                                <option value="2">2 low</option>
+                                <option value="3">3 low</option>
+                                <option value="4">4 low</option>
+                                <option value="5">5 low</option>
+                            </select>
+                        </div>
+                        <div class="range-control">
+                            <select id="midCount">
+                                <option value="any">Any mid</option>
+                                <option value="0">0 mid</option>
+                                <option value="1">1 mid</option>
+                                <option value="2">2 mid</option>
+                                <option value="3">3 mid</option>
+                                <option value="4">4 mid</option>
+                                <option value="5">5 mid</option>
+                            </select>
+                        </div>
+                        <div class="range-control">
+                            <select id="highCount">
+                                <option value="any">Any high</option>
+                                <option value="0">0 high</option>
+                                <option value="1">1 high</option>
+                                <option value="2">2 high</option>
+                                <option value="3">3 high</option>
+                                <option value="4">4 high</option>
+                                <option value="5">5 high</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="rangePref">Distribution Preference:</label>
+                    <select id="rangePref">
+                        <option value="any">Any distribution</option>
+                        <option value="low">Mostly low (1-15)</option>
+                        <option value="mid">Mostly mid (16-30)</option>
+                        <option value="high">Mostly high (31-39)</option>
+                        <option value="balanced">Balanced mix</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button onclick="generateNumbers()">Generate Numbers</button>
+            
+            <div class="generated-numbers" id="generatedNumbers"></div>
+        </div>
+        
+        <div class="file-input">
+            <input type="file" id="csvFile" accept=".csv">
+            <button onclick="analyzeFile()">Analyze File</button>
+        </div>
+        
+        <div id="fileInfo"></div>
+        
+        <div class="results" id="results" style="display: none;">
+            <!-- All the analysis tabs and content remains exactly the same -->
+            <h2>Analysis Results</h2>
+            <div id="summary"></div>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('oddsEvens')">Odds/Evens</div>
+                <div class="tab" onclick="switchTab('lowMidHigh')">Low/Mid/High</div>
+                <div class="tab" onclick="switchTab('combined')">Combined Analysis</div>
+                <div class="tab" onclick="switchTab('numberFreq')">Main Numbers</div>
+                <div class="tab" onclick="switchTab('hotCold')">Hot & Cold</div>
+                <div class="tab" onclick="switchTab('bonusBall')">Thunderball</div>
+            </div>
+            
+            <div id="oddsEvens" class="tab-content active">
+                <h3>Odd/Even Pattern Frequencies (Main Numbers)</h3>
+                <table id="oddsEvensTable">
+                    <thead>
+                        <tr>
+                            <th>Pattern</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody id="oddsEvensBody"></tbody>
+                </table>
+                
+                <h3>Most Common Odd/Even Combinations</h3>
+                <div id="commonOddsEvens"></div>
+            </div>
+            
+            <div id="lowMidHigh" class="tab-content">
+                <h3>Low/Mid/High Pattern Frequencies (Main Numbers)</h3>
+                <p>Low: 1-15 | Mid: 16-30 | High: 31-40</p>
+                <table id="lowMidHighTable">
+                    <thead>
+                        <tr>
+                            <th>Pattern</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lowMidHighBody"></tbody>
+                </table>
+                
+                <h3>Most Common Low/Mid/High Combinations</h3>
+                <div id="commonLowMidHigh"></div>
+            </div>
+            
+            <div id="combined" class="tab-content">
+                <h3>Combined Pattern Analysis (Main Numbers)</h3>
+                <p>Shows the most frequent combinations of odd/even and low/mid/high patterns</p>
+                <table id="combinedTable">
+                    <thead>
+                        <tr>
+                            <th>Odd/Even</th>
+                            <th>Low/Mid/High</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody id="combinedBody"></tbody>
+                </table>
+                
+                <h3>Top Combined Patterns</h3>
+                <div id="commonCombined"></div>
+            </div>
+            
+            <div id="numberFreq" class="tab-content">
+                <h3>Main Numbers Frequency (1-49)</h3>
+                <div class="number-grid" id="numberGrid"></div>
+                
+                <table id="numberFreqTable">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                            <th>Type</th>
+                            <th>Odd/Even</th>
+                        </tr>
+                    </thead>
+                    <tbody id="numberFreqBody"></tbody>
+                </table>
+            </div>
+            
+            <div id="hotCold" class="tab-content">
+                <h3>Hot & Cold Numbers Analysis (Main Numbers)</h3>
+                <p>Hot numbers appear most frequently, cold numbers appear least frequently</p>
+                
+                <div class="hot-cold-section">
+                    <div class="hot-cold-box hot-numbers">
+                        <h4>Top 10 Hot Numbers</h4>
+                        <div id="hotNumbers"></div>
+                    </div>
+                    <div class="hot-cold-box cold-numbers">
+                        <h4>Top 10 Cold Numbers</h4>
+                        <div id="coldNumbers"></div>
+                    </div>
+                </div>
+                
+                <h4>Hot & Cold Numbers Grid</h4>
+                <div class="number-grid" id="hotColdGrid"></div>
+                
+                <h4>Full Number Frequency</h4>
+                <table id="hotColdTable">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hotColdBody"></tbody>
+                </table>
+            </div>
+            
+            <div id="bonusBall" class="tab-content">
+                <h3>Thunderball Analysis (Numbers 1-14)</h3>
+                
+                <div class="hot-cold-section">
+                    <div class="hot-cold-box hot-numbers">
+                        <h4>Top 5 Hot Thunderballs</h4>
+                        <div id="hotBonusNumbers"></div>
+                    </div>
+                    <div class="hot-cold-box cold-numbers">
+                        <h4>Top 5 Cold Thunderballs</h4>
+                        <div id="coldBonusNumbers"></div>
+                    </div>
+                </div>
+                
+                <h4>Thunderball Frequency Grid</h4>
+                <div class="bonus-grid" id="bonusGrid"></div>
+                
+                <h4>Full Thunderball Frequency</h4>
+                <table id="bonusTable">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                            <th>Status</th>
+                            <th>Odd/Even</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bonusBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let analysisData = {};
+        let totalDraws = 0;
+        
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate selected tab and content
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        function generateNumbers() {
+            const numLines = parseInt(document.getElementById('numLines').value) || 5;
+            const oddCountPref = document.getElementById('oddCount').value;
+            const evenCountPref = document.getElementById('evenCount').value;
+            const lowCountPref = document.getElementById('lowCount').value;
+            const midCountPref = document.getElementById('midCount').value;
+            const highCountPref = document.getElementById('highCount').value;
+            const rangePref = document.getElementById('rangePref').value;
+            
+            const generatedNumbersDiv = document.getElementById('generatedNumbers');
+            generatedNumbersDiv.innerHTML = '';
+            
+            for (let i = 0; i < numLines; i++) {
+                let validLine = false;
+                let mainNumbers = [];
+                let thunderball = 0;
+                let attempts = 0;
+                const maxAttempts = 1000; // Prevent infinite loops
+                
+                // Keep trying until we get a valid line based on preferences
+                while (!validLine && attempts < maxAttempts) {
+                    attempts++;
+                    // Generate main numbers (5 unique numbers between 1-39)
+                    mainNumbers = [];
+                    while (mainNumbers.length < 5) {
+                        const num = Math.floor(Math.random() * 39) + 1;
+                        if (!mainNumbers.includes(num)) {
+                            mainNumbers.push(num);
+                        }
+                    }
+                    mainNumbers.sort((a, b) => a - b);
+                    
+                    // Generate thunderball (1 number between 1-14)
+                    thunderball = Math.floor(Math.random() * 14) + 1;
+                    
+                    // Check if this line meets the preferences
+                    validLine = checkLinePreferences(
+                        mainNumbers, 
+                        oddCountPref, 
+                        evenCountPref, 
+                        lowCountPref, 
+                        midCountPref, 
+                        highCountPref,
+                        rangePref
+                    );
+                }
+                
+                if (attempts >= maxAttempts) {
+                    generatedNumbersDiv.innerHTML += `<p>Could not generate line ${i+1} that matches all your criteria after ${maxAttempts} attempts. Try relaxing some constraints.</p>`;
+                    continue;
+                }
+                
+                // Calculate stats for this line
+                const oddCount = mainNumbers.filter(n => n % 2 === 1).length;
+                const evenCount = 5 - oddCount;
+                
+                let lowCount = 0, midCount = 0, highCount = 0;
+                mainNumbers.forEach(num => {
+                    if (num <= 15) lowCount++;
+                    else if (num <= 30) midCount++;
+                    else highCount++;
+                });
+                
+                // Create the display for this line
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'number-line';
+                
+                const mainNumbersDiv = document.createElement('div');
+                mainNumbersDiv.className = 'main-numbers';
+                
+                mainNumbers.forEach(num => {
+                    const numBall = document.createElement('div');
+                    numBall.className = 'number-ball';
+                    
+                    // Color code based on range
+                    if (num <= 15) numBall.classList.add('low-number');
+                    else if (num <= 30) numBall.classList.add('mid-number');
+                    else numBall.classList.add('high-number');
+                    
+                    numBall.textContent = num;
+                    mainNumbersDiv.appendChild(numBall);
+                });
+                
+                const thunderballDiv = document.createElement('div');
+                thunderballDiv.className = 'number-ball thunderball';
+                thunderballDiv.textContent = thunderball;
+                
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'stats';
+                statsDiv.innerHTML = `
+                    ${oddCount} odd / ${evenCount} even | 
+                    ${lowCount} low / ${midCount} mid / ${highCount} high
+                `;
+                
+                lineDiv.appendChild(mainNumbersDiv);
+                lineDiv.appendChild(thunderballDiv);
+                lineDiv.appendChild(statsDiv);
+                generatedNumbersDiv.appendChild(lineDiv);
+            }
+        }
+        
+        function checkLinePreferences(numbers, oddCountPref, evenCountPref, lowCountPref, midCountPref, highCountPref, rangePref) {
+            // Check odd/even preferences
+            const oddCount = numbers.filter(n => n % 2 === 1).length;
+            const evenCount = 5 - oddCount;
+            
+            if (oddCountPref !== 'any' && parseInt(oddCountPref) !== oddCount) {
+                return false;
+            }
+            
+            if (evenCountPref !== 'any' && parseInt(evenCountPref) !== evenCount) {
+                return false;
+            }
+            
+            // Check range preferences
+            let lowCount = 0, midCount = 0, highCount = 0;
+            
+            numbers.forEach(num => {
+                if (num <= 15) lowCount++;
+                else if (num <= 30) midCount++;
+                else highCount++;
+            });
+            
+            if (lowCountPref !== 'any' && parseInt(lowCountPref) !== lowCount) {
+                return false;
+            }
+            
+            if (midCountPref !== 'any' && parseInt(midCountPref) !== midCount) {
+                return false;
+            }
+            
+            if (highCountPref !== 'any' && parseInt(highCountPref) !== highCount) {
+                return false;
+            }
+            
+            // Additional validation to ensure the counts add up to 5
+            if (lowCountPref !== 'any' && midCountPref !== 'any' && highCountPref !== 'any') {
+                const totalRequested = parseInt(lowCountPref) + parseInt(midCountPref) + parseInt(highCountPref);
+                if (totalRequested !== 5) {
+                    return false;
+                }
+            }
+            
+            // Check distribution preference
+            switch (rangePref) {
+                case 'low':
+                    if (lowCount < 3) return false;
+                    break;
+                case 'mid':
+                    if (midCount < 3) return false;
+                    break;
+                case 'high':
+                    if (highCount < 3) return false;
+                    break;
+                case 'balanced':
+                    if (lowCount < 1 || midCount < 1 || highCount < 1) return false;
+                    break;
+            }
+            
+            return true;
+        }
+
+        // All the analysis functions remain exactly the same
+        function analyzeFile() {
+            const fileInput = document.getElementById('csvFile');
+            const fileInfo = document.getElementById('fileInfo');
+            const results = document.getElementById('results');
+            const summary = document.getElementById('summary');
+            
+            const file = fileInput.files[0];
+            if (!file) {
+                fileInfo.innerHTML = '<p style="color: red;">Please select a CSV file first.</p>';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                const lines = contents.split('\n');
+                totalDraws = 0;
+                
+                // Initialize data structures
+                analysisData = {
+                    oddsEvens: {},
+                    lowMidHigh: {},
+                    combined: {},
+                    numberFreq: {},
+                    bonusFreq: {},
+                    allNumbers: [],
+                    bonusNumbers: []
+                };
+                
+                // Initialize number frequency counts (1-40 for main, 1-14 for bonus)
+                for (let i = 1; i <= 40; i++) {
+                    analysisData.numberFreq[i] = 0;
+                }
+                for (let i = 1; i <= 14; i++) {
+                    analysisData.bonusFreq[i] = 0;
+                }
+                
+                // Process each line
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line === '') continue;
+                    
+                    // Split CSV line (handle both comma and space separated)
+                    const numbers = line.split(/[, ]+/).map(num => parseInt(num.trim())).filter(num => !isNaN(num));
+                    
+                    if (numbers.length >= 6) { // 5 main numbers + 1 Thunderball
+                        totalDraws++;
+                        const mainNumbers = numbers.slice(0, 5); // First 5 numbers
+                        const bonusNumber = numbers[5]; // Thunderball
+                        
+                        // Add to all numbers for frequency analysis
+                        analysisData.allNumbers.push(...mainNumbers);
+                        analysisData.bonusNumbers.push(bonusNumber);
+                        
+                        // Count Thunderball frequency
+                        analysisData.bonusFreq[bonusNumber]++;
+                        
+                        // Count odd and even numbers
+                        let oddCount = 0;
+                        let evenCount = 0;
+                        
+                        // Count low, mid, high numbers
+                        let lowCount = 0;
+                        let midCount = 0;
+                        let highCount = 0;
+                        
+                        for (let j = 0; j < 5; j++) {
+                            const num = mainNumbers[j];
+                            
+                            // Update number frequency
+                            analysisData.numberFreq[num]++;
+                            
+                            // Odd/even count
+                            if (num % 2 === 1) {
+                                oddCount++;
+                            } else {
+                                evenCount++;
+                            }
+                            
+                            // Low/mid/high count
+                            if (num <= 15) {
+                                lowCount++;
+                            } else if (num <= 30) {
+                                midCount++;
+                            } else {
+                                highCount++;
+                            }
+                        }
+                        
+                        const oePattern = `${oddCount} odd / ${evenCount} even`;
+                        const lmhPattern = `${lowCount} low / ${midCount} mid / ${highCount} high`;
+                        const combinedPattern = `${oePattern} | ${lmhPattern}`;
+                        
+                        // Example combination for this pattern
+                        const example = mainNumbers.join(', ') + ` (Thunderball: ${bonusNumber})`;
+                        
+                        // Update pattern counts
+                        updatePatternCount(analysisData.oddsEvens, oePattern, example);
+                        updatePatternCount(analysisData.lowMidHigh, lmhPattern, example);
+                        updatePatternCount(analysisData.combined, combinedPattern, example);
+                    }
+                }
+                
+                // Display summary
+                fileInfo.innerHTML = `<p>File processed: ${file.name}</p>`;
+                summary.innerHTML = `<p>Total draws analyzed: ${totalDraws}</p>`;
+                
+                // Process and display all analyses
+                displayOddsEvensAnalysis();
+                displayLowMidHighAnalysis();
+                displayCombinedAnalysis();
+                displayNumberFrequency();
+                displayHotColdNumbers();
+                displayBonusBallAnalysis();
+                
+                // Show results
+                results.style.display = 'block';
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        function updatePatternCount(obj, pattern, example) {
+            if (obj[pattern]) {
+                obj[pattern].count++;
+                // Keep track of one example per pattern
+                if (!obj[pattern].examples) {
+                    obj[pattern].examples = [];
+                }
+                if (obj[pattern].examples.length < 3) {
+                    obj[pattern].examples.push(example);
+                }
+            } else {
+                obj[pattern] = {
+                    count: 1,
+                    examples: [example]
+                };
+            }
+        }
+        
+        function displayOddsEvensAnalysis() {
+            const body = document.getElementById('oddsEvensBody');
+            const commonDiv = document.getElementById('commonOddsEvens');
+            
+            // Convert to array and sort
+            const patterns = Object.keys(analysisData.oddsEvens).map(key => {
+                return {
+                    pattern: key,
+                    count: analysisData.oddsEvens[key].count,
+                    percentage: (analysisData.oddsEvens[key].count / totalDraws * 100).toFixed(2),
+                    examples: analysisData.oddsEvens[key].examples
+                };
+            }).sort((a, b) => b.count - a.count);
+            
+            // Populate table
+            body.innerHTML = '';
+            patterns.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.pattern}</td>
+                    <td>${item.count}</td>
+                    <td>${item.percentage}%</td>
+                    <td>${item.examples[0]}</td>
+                `;
+                body.appendChild(row);
+            });
+            
+            // Display top patterns
+            commonDiv.innerHTML = '';
+            const topPatterns = patterns.slice(0, 3);
+            topPatterns.forEach((pattern, index) => {
+                const rank = ['1st', '2nd', '3rd'][index];
+                commonDiv.innerHTML += `
+                    <p><span class="highlight">${rank}</span>: ${pattern.pattern} (${pattern.count} times, ${pattern.percentage}%)<br>
+                    Example: ${pattern.examples[0]}</p>
+                `;
+            });
+        }
+        
+        function displayLowMidHighAnalysis() {
+            const body = document.getElementById('lowMidHighBody');
+            const commonDiv = document.getElementById('commonLowMidHigh');
+            
+            // Convert to array and sort
+            const patterns = Object.keys(analysisData.lowMidHigh).map(key => {
+                return {
+                    pattern: key,
+                    count: analysisData.lowMidHigh[key].count,
+                    percentage: (analysisData.lowMidHigh[key].count / totalDraws * 100).toFixed(2),
+                    examples: analysisData.lowMidHigh[key].examples
+                };
+            }).sort((a, b) => b.count - a.count);
+            
+            // Populate table
+            body.innerHTML = '';
+            patterns.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.pattern}</td>
+                    <td>${item.count}</td>
+                    <td>${item.percentage}%</td>
+                    <td>${item.examples[0]}</td>
+                `;
+                body.appendChild(row);
+            });
+            
+            // Display top patterns
+            commonDiv.innerHTML = '';
+            const topPatterns = patterns.slice(0, 3);
+            topPatterns.forEach((pattern, index) => {
+                const rank = ['1st', '2nd', '3rd'][index];
+                commonDiv.innerHTML += `
+                    <p><span class="highlight">${rank}</span>: ${pattern.pattern} (${pattern.count} times, ${pattern.percentage}%)<br>
+                    Example: ${pattern.examples[0]}</p>
+                `;
+            });
+        }
+        
+        function displayCombinedAnalysis() {
+            const body = document.getElementById('combinedBody');
+            const commonDiv = document.getElementById('commonCombined');
+            
+            // Convert to array and sort
+            const patterns = Object.keys(analysisData.combined).map(key => {
+                const [oe, lmh] = key.split(' | ');
+                return {
+                    oePattern: oe,
+                    lmhPattern: lmh,
+                    count: analysisData.combined[key].count,
+                    percentage: (analysisData.combined[key].count / totalDraws * 100).toFixed(2),
+                    examples: analysisData.combined[key].examples
+                };
+            }).sort((a, b) => b.count - a.count);
+            
+            // Populate table
+            body.innerHTML = '';
+            patterns.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.oePattern}</td>
+                    <td>${item.lmhPattern}</td>
+                    <td>${item.count}</td>
+                    <td>${item.percentage}%</td>
+                    <td>${item.examples[0]}</td>
+                `;
+                body.appendChild(row);
+            });
+            
+            // Display top patterns
+            commonDiv.innerHTML = '';
+            const topPatterns = patterns.slice(0, 5);
+            topPatterns.forEach((pattern, index) => {
+                const rank = ['1st', '2nd', '3rd', '4th', '5th'][index];
+                commonDiv.innerHTML += `
+                    <p><span class="highlight">${rank}</span>: ${pattern.oePattern} AND ${pattern.lmhPattern}<br>
+                    (${pattern.count} times, ${pattern.percentage}%)<br>
+                    Example: ${pattern.examples[0]}</p>
+                `;
+            });
+        }
+        
+        function displayNumberFrequency() {
+            const grid = document.getElementById('numberGrid');
+            const body = document.getElementById('numberFreqBody');
+            
+            // Convert to array and sort by number (1-40)
+            const numbers = [];
+            for (let i = 1; i <= 40; i++) {
+                numbers.push({
+                    number: i,
+                    count: analysisData.numberFreq[i] || 0,
+                    percentage: ((analysisData.numberFreq[i] || 0) / totalDraws * 100).toFixed(2),
+                    type: getNumberType(i),
+                    parity: i % 2 === 0 ? 'Even' : 'Odd'
+                });
+            }
+            
+            // Populate number grid
+            grid.innerHTML = '';
+            numbers.forEach(num => {
+                const cell = document.createElement('div');
+                cell.className = 'number-cell';
+                cell.innerHTML = `
+                    <div>${num.number}</div>
+                    <div><strong>${num.count}</strong></div>
+                    <small>${num.percentage}%</small>
+                `;
+                grid.appendChild(cell);
+            });
+            
+            // Populate frequency table (sorted by number)
+            body.innerHTML = '';
+            numbers.forEach(num => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${num.number}</td>
+                    <td>${num.count}</td>
+                    <td>${num.percentage}%</td>
+                    <td>${num.type}</td>
+                    <td>${num.parity}</td>
+                `;
+                body.appendChild(row);
+            });
+        }
+        
+        function displayHotColdNumbers() {
+            const hotNumbersDiv = document.getElementById('hotNumbers');
+            const coldNumbersDiv = document.getElementById('coldNumbers');
+            const hotColdGrid = document.getElementById('hotColdGrid');
+            const hotColdBody = document.getElementById('hotColdBody');
+            
+            // Convert to array and sort by frequency (descending)
+            const numbersByFrequency = [];
+            for (let i = 1; i <= 40; i++) {
+                numbersByFrequency.push({
+                    number: i,
+                    count: analysisData.numberFreq[i] || 0,
+                    percentage: ((analysisData.numberFreq[i] || 0) / totalDraws * 100).toFixed(2),
+                    type: getNumberType(i),
+                    parity: i % 2 === 0 ? 'Even' : 'Odd'
+                });
+            }
+            
+            // Sort by count (descending)
+            numbersByFrequency.sort((a, b) => b.count - a.count);
+            
+            // Get top 10 hot numbers
+            const hotNumbers = numbersByFrequency.slice(0, 10);
+            
+            // Get top 10 cold numbers (reverse the array and take first 10)
+            const coldNumbers = [...numbersByFrequency].sort((a, b) => a.count - b.count).slice(0, 10);
+            
+            // Display hot numbers
+            hotNumbersDiv.innerHTML = '';
+            hotNumbers.forEach((num, index) => {
+                hotNumbersDiv.innerHTML += `
+                    <p>${index + 1}. <span class="hot-number">${num.number}</span> - ${num.count} times (${num.percentage}%)</p>
+                `;
+            });
+            
+            // Display cold numbers
+            coldNumbersDiv.innerHTML = '';
+            coldNumbers.forEach((num, index) => {
+                coldNumbersDiv.innerHTML += `
+                    <p>${index + 1}. <span class="cold-number">${num.number}</span> - ${num.count} times (${num.percentage}%)</p>
+                `;
+            });
+            
+            // Create hot/cold grid (1-40 with visual indicators)
+            hotColdGrid.innerHTML = '';
+            for (let i = 1; i <= 40; i++) {
+                const num = numbersByFrequency.find(n => n.number === i);
+                const isHot = hotNumbers.some(n => n.number === i);
+                const isCold = coldNumbers.some(n => n.number === i);
+                
+                const cell = document.createElement('div');
+                cell.className = 'number-cell';
+                if (isHot) cell.classList.add('hot-number');
+                if (isCold) cell.classList.add('cold-number');
+                
+                cell.innerHTML = `
+                    <div>${i}</div>
+                    <div><strong>${num.count}</strong></div>
+                `;
+                hotColdGrid.appendChild(cell);
+            }
+            
+            // Populate hot/cold table (sorted by frequency)
+            hotColdBody.innerHTML = '';
+            numbersByFrequency.forEach(num => {
+                const isHot = hotNumbers.some(n => n.number === num.number);
+                const isCold = coldNumbers.some(n => n.number === num.number);
+                const status = isHot ? 'Hot' : isCold ? 'Cold' : 'Normal';
+                
+                const row = document.createElement('tr');
+                if (isHot) row.classList.add('hot-number');
+                if (isCold) row.classList.add('cold-number');
+                
+                row.innerHTML = `
+                    <td>${num.number}</td>
+                    <td>${num.count}</td>
+                    <td>${num.percentage}%</td>
+                    <td>${status}</td>
+                `;
+                hotColdBody.appendChild(row);
+            });
+        }
+        
+        function displayBonusBallAnalysis() {
+            const hotNumbersDiv = document.getElementById('hotBonusNumbers');
+            const coldNumbersDiv = document.getElementById('coldBonusNumbers');
+            const bonusGrid = document.getElementById('bonusGrid');
+            const bonusBody = document.getElementById('bonusBody');
+            
+            // Convert to array and sort by frequency (descending)
+            const bonusNumbersByFrequency = [];
+            for (let i = 1; i <= 14; i++) {
+                bonusNumbersByFrequency.push({
+                    number: i,
+                    count: analysisData.bonusFreq[i] || 0,
+                    percentage: ((analysisData.bonusFreq[i] || 0) / totalDraws * 100).toFixed(2),
+                    parity: i % 2 === 0 ? 'Even' : 'Odd'
+                });
+            }
+            
+            // Sort by count (descending)
+            bonusNumbersByFrequency.sort((a, b) => b.count - a.count);
+            
+            // Get top 5 hot bonus numbers
+            const hotBonusNumbers = bonusNumbersByFrequency.slice(0, 5);
+            
+            // Get top 5 cold bonus numbers (reverse the array and take first 5)
+            const coldBonusNumbers = [...bonusNumbersByFrequency].sort((a, b) => a.count - b.count).slice(0, 5);
+            
+            // Display hot bonus numbers
+            hotNumbersDiv.innerHTML = '';
+            hotBonusNumbers.forEach((num, index) => {
+                hotNumbersDiv.innerHTML += `
+                    <p>${index + 1}. <span class="hot-number">${num.number}</span> - ${num.count} times (${num.percentage}%)</p>
+                `;
+            });
+            
+            // Display cold bonus numbers
+            coldNumbersDiv.innerHTML = '';
+            coldBonusNumbers.forEach((num, index) => {
+                coldNumbersDiv.innerHTML += `
+                    <p>${index + 1}. <span class="cold-number">${num.number}</span> - ${num.count} times (${num.percentage}%)</p>
+                `;
+            });
+            
+            // Create bonus grid (1-14 with visual indicators)
+            bonusGrid.innerHTML = '';
+            for (let i = 1; i <= 14; i++) {
+                const num = bonusNumbersByFrequency.find(n => n.number === i);
+                const isHot = hotBonusNumbers.some(n => n.number === i);
+                const isCold = coldBonusNumbers.some(n => n.number === i);
+                
+                const cell = document.createElement('div');
+                cell.className = 'number-cell';
+                if (isHot) cell.classList.add('hot-number');
+                if (isCold) cell.classList.add('cold-number');
+                
+                cell.innerHTML = `
+                    <div>${i}</div>
+                    <div><strong>${num.count}</strong></div>
+                    <small>${num.percentage}%</small>
+                `;
+                bonusGrid.appendChild(cell);
+            }
+            
+            // Populate bonus table (sorted by frequency)
+            bonusBody.innerHTML = '';
+            bonusNumbersByFrequency.forEach(num => {
+                const isHot = hotBonusNumbers.some(n => n.number === num.number);
+                const isCold = coldBonusNumbers.some(n => n.number === num.number);
+                const status = isHot ? 'Hot' : isCold ? 'Cold' : 'Normal';
+                
+                const row = document.createElement('tr');
+                if (isHot) row.classList.add('hot-number');
+                if (isCold) row.classList.add('cold-number');
+                
+                row.innerHTML = `
+                    <td>${num.number}</td>
+                    <td>${num.count}</td>
+                    <td>${num.percentage}%</td>
+                    <td>${status}</td>
+                    <td>${num.parity}</td>
+                `;
+                bonusBody.appendChild(row);
+            });
+        }
+        
+        function getNumberType(num) {
+            if (num <= 15) return 'Low';
+            if (num <= 30) return 'Mid';
+            return 'High';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+/* ===== Base Styles ===== */
+:root {
+  --primary: #3498db;
+  --primary-dark: #2980b9;
+  --secondary: #9b59b6;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+  --warning: #f39c12;
+  --light: #ecf0f1;
+  --dark: #2c3e50;
+  --gray: #95a5a6;
+  --white: #ffffff;
+  --low-number: var(--success);
+  --mid-number: var(--primary);
+  --high-number: var(--danger);
+  --thunderball: var(--secondary);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+  line-height: 1.6;
+  color: var(--dark);
+  background-color: #f5f7fa;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* ===== Layout ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Typography ===== */
+h1, h2, h3 {
+  color: var(--dark);
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  color: var(--primary);
+  position: relative;
+  padding-bottom: 15px;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 2px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-top: 2rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+/* ===== Form Elements ===== */
+.control-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 0.95rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: var(--white);
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.number-input::placeholder {
+  color: var(--gray);
+}
+
+/* ===== Buttons ===== */
+.button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+button {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button.secondary {
+  background-color: var(--gray);
+}
+
+button.secondary:hover {
+  background-color: #7f8c8d;
+}
+
+/* ===== Panel Styles ===== */
+.panel {
+  background-color: var(--white);
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.3s ease;
+}
+
+.panel:hover {
+  transform: translateY(-3px);
+}
+
+.stats-panel {
+  background-color: #e8f4fc;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  border-left: 4px solid var(--secondary);
+}
+
+.stats-panel p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.stats-panel span {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+/* ===== Number Display ===== */
+.generated-numbers {
+  margin-top: 2rem;
+}
+
+.number-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 18px;
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.number-line:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.number-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
+}
+
+.main-numbers {
+  display: flex;
+  gap: 10px;
+  margin-right: 25px;
+  flex-wrap: wrap;
+}
+
+.number-ball {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.number-ball:hover {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.low-number {
+  background-color: var(--low-number);
+}
+
+.mid-number {
+  background-color: var(--mid-number);
+}
+
+.high-number {
+  background-color: var(--high-number);
+}
+
+.thunderball {
+  background-color: var(--thunderball);
+  margin-right: 25px;
+  position: relative;
+}
+
+.thunderball::after {
+  content: 'TB';
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--thunderball);
+  font-weight: bold;
+}
+
+.stats {
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: var(--gray);
+  background-color: #f1f1f1;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.stats span {
+  font-weight: 700;
+  color: var(--dark);
+}
+
+/* ===== Range Controls ===== */
+.range-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.range-control {
+  flex: 1;
+}
+
+/* ===== Analysis Results ===== */
+.analysis-results {
+  background-color: #f9f9f9;
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 2rem;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.analysis-results h3 {
+  margin-top: 0;
+  color: var(--primary);
+}
+
+.analysis-results ul {
+  padding-left: 25px;
+  margin-top: 10px;
+}
+
+.analysis-results li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 15px;
+}
+
+.analysis-results li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+/* ===== Grid Layout ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .range-controls {
+    flex-direction: column;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  button {
+    width: 100%;
+  }
+  
+  .number-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .stats {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-numbers {
+    gap: 8px;
+  }
+  
+  .number-ball {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}
+
+/* ===== Utility Classes ===== */
+.small {
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-top: 5px;
+  display: block;
+}
+
+/* ===== Animation Enhancements ===== */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.generate-animation {
+  animation: pulse 0.5s ease;
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  body {
+    background: none;
+    padding: 0;
+  }
+  
+  .container {
+    box-shadow: none;
+    padding: 0;
+  }
+  
+  button, .panel, .stats-panel {
+    display: none;
+  }
+  
+  .number-line {
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+}
